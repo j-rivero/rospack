@@ -3,14 +3,11 @@ project(rospack)
 
 find_package(catkin REQUIRED COMPONENTS cmake_modules)
 find_package(Boost REQUIRED COMPONENTS filesystem program_options system)
-set(Python_ADDITIONAL_VERSIONS "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
-set(PythonLibs_FIND_VERSION "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
-find_package(PythonLibs REQUIRED)
 find_package(TinyXML REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES rospack ${PYTHON_LIBRARIES}
+  LIBRARIES rospack
   DEPENDS Boost TinyXML
 )
 
@@ -22,7 +19,7 @@ if(API_BACKCOMPAT_V1)
   set(backcompat_source src/rospack_backcompat.cpp)
 endif()
 
-include_directories(include ${TinyXML_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
+include_directories(include ${TinyXML_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 add_library(rospack
   src/rospack.cpp
@@ -30,7 +27,7 @@ add_library(rospack
   src/rospack_cmdline.cpp
   src/utils.cpp
 )
-target_link_libraries(rospack ${TinyXML_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+target_link_libraries(rospack ${TinyXML_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(rospackexe src/rospack_main.cpp)
 # Set the name, and make it a "global" executable
